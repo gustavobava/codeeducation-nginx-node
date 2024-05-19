@@ -10,12 +10,16 @@ services:
       MYSQL_DATABASE: testdb
     ports:
       - "3306:3306"
+    networks:
+      - app-network
 
   node-app:
     build: ./node-app
     container_name: node-app-codeeducation
     depends_on:
       - mysql
+    networks:
+      - app-network
 
   nginx:
     image: nginx:latest
@@ -26,3 +30,9 @@ services:
       - "8080:80"
     depends_on:
       - node-app
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
