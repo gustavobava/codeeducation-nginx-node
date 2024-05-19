@@ -3,6 +3,9 @@ FROM node:14
 WORKDIR /usr/src/app
 
 COPY package*.json ./
+COPY wait-for-it.sh ./
+
+RUN chmod +x wait-for-it.sh
 
 RUN npm install
 RUN npm install mysql
@@ -12,4 +15,4 @@ COPY . .
 
 EXPOSE 3000
 
-CMD ["node", "app.js"]
+CMD ["./wait-for-it.sh", "mysql:3306", "--", "node", "app.js"]
